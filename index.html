@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geopolitical Policy Chatbot</title>
+  <style>
+    /* Basic reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #1e3a8a;
+      text-align: center;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 600px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .chat-log {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      background-color: #f9fafb;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      max-width: 85%;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .user {
+      background-color: #dbeafe;
+      align-self: flex-end;
+      color: #1e40af;
+    }
+
+    .bot {
+      background-color: #e0f2fe;
+      align-self: flex-start;
+      color: #0c4a6e;
+    }
+
+    .input-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 18px;
+      background-color: #1e3a8a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <h1>Geopolitical Policy Chatbot</h1>
+  <div class="chat-container">
+    <div class="chat-log" id="chat-log">
+      <!-- Chat messages will appear here -->
+    </div>
+    <div class="input-container">
+      <input type="text" id="question" placeholder="Ask a question..." />
+      <button onclick="askBot()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatLog = document.getElementById('chat-log');
+
+    async function askBot() {
+      const questionInput = document.getElementById('question');
+      const question = questionInput.value.trim();
+      if (!question) return;
+
+      // Add user message to chat
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user';
+      userMsg.innerText = question;
+      chatLog.appendChild(userMsg);
+      chatLog.scrollTop = chatLog.scrollHeight;
+
+      questionInput.value = '';
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question })
+        });
+
+        const data = await response.json();
+
+        // Add bot message to chat
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        botMsg.innerText = data.answer;
+        chatLog.appendChild(botMsg);
+        chatLog.scrollTop = chatLog.scrollHeight;
+
+      } catch (error) {
+        console.error('Error contacting the API:', error);
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'message bot';
+        errorMsg.innerText = 'Error: Could not reach the chatbot API.';
+        chatLog.appendChild(errorMsg);
+      }
+    }
+
+    // Optional: allow pressing Enter to submit
+    document.getElementById('question').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') askBot();
+    });
+  </script>
+</body>
+</html>
