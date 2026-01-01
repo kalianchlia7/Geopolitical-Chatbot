@@ -29,8 +29,11 @@ The chatbot can respond to complex policy questions, retrieve information from *
 Example Queries
 
 “What are the current OFAC sanctions on Cuba?”
+
 “Explain the difference between MFN tariffs and preferential tariffs.”
+
 “How do EU sectoral sanctions work?”
+
 “What impact do trade tariffs have on developing countries?”
 
 The bot automatically provides educational disclaimers, references relevant datasets, and blocks dangerous or illegal queries.
@@ -40,8 +43,11 @@ The bot automatically provides educational disclaimers, references relevant data
 Technology Stack
 
 Backend: Python, FastAPI
+
 Frontend: HTML, CSS, JavaScript
+
 Data Handling: Pandas for CSV lookups
+
 LLM Integration: OpenAI API (or any compatible LLM)
 
 ---
