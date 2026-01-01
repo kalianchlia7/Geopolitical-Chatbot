@@ -53,5 +53,3 @@ LLM Integration: OpenAI API (or any compatible LLM)
 ```bash
 git clone https://github.com/<your-username>/geopolitical-policy-chatbot.git
 cd geopolitical-policy-chatbot
-
----
